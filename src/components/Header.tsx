@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { Headphones } from "lucide-react";
 import SearchBar from "./SearchBar";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   return (
@@ -17,9 +20,8 @@ export default function Header() {
           <SearchBar />
         </div>
 
-        {/* Search bar and theme toggle will be added in next steps */}
         <div className="flex items-center gap-4">
-          {/* Placeholder for future components */}
+          <ThemeToggle />
         </div>
       </div>
     </header>
