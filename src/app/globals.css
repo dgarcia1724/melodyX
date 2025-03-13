@@ -1,20 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  /* Light mode colors */
-  --melody-base: #ffffff;
-  --melody-surface: #f6f6f6;
-  --melody-surface-low: #ececec;
-  --melody-surface-high: #e3e3e3;
-  --melody-text-primary: #000000;
-  --melody-text-secondary: #6a6a6a;
-  --melody-text-subdued: #757575;
-  --melody-accent: #40e0d0;
-  --melody-accent-hover: #30d5c8;
-}
-
-/* Dark mode colors (Spotify's default) */
-.dark {
+  /* Dark mode colors (Spotify's default) */
   --melody-base: #121212;
   --melody-surface: #181818;
   --melody-surface-low: #282828;
