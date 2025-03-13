@@ -1,8 +1,23 @@
 @import "tailwindcss";
 
 :root {
+  /* Base colors */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
+
+  /* MelodyX theme colors */
+  --melody-base: #121212;
+  --melody-surface: #181818;
+  --melody-surface-low: #282828;
+  --melody-surface-high: #333333;
+  --melody-text-primary: #ffffff;
+  --melody-text-secondary: #b3b3b3;
+  --melody-text-subdued: #a7a7a7;
+  --melody-accent: #40e0d0; /* Turquoise replacing Spotify's green */
+  --melody-accent-hover: #30d5c8; /* Darker turquoise for hover states */
+  --melody-negative: #f15e6c; /* Red for errors/alerts */
+  --melody-warning: #ffe484; /* Yellow for warnings */
+  --melody-positive: #1ed760; /* Keep Spotify's green for success states */
 }
 
 @theme inline {
@@ -12,15 +27,9 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Dark mode is the default for MelodyX, like Spotify */
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--melody-base);
+  color: var(--melody-text-primary);
   font-family: Arial, Helvetica, sans-serif;
 }
