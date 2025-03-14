@@ -1,92 +1,91 @@
-export default function Home() {
+import { getTopTracks, getFeaturedPlaylists } from "@/lib/spotify";
+import type { SpotifyAlbum, SpotifyPlaylist } from "@/lib/spotify";
+import Image from "next/image";
+import { Music, ListMusic } from "lucide-react";
+
+export const revalidate = 3600; // Revalidate every hour
+
+export default async function Home() {
+  const [topTracks, featuredPlaylists] = await Promise.all([
+    getTopTracks(),
+    getFeaturedPlaylists(),
+  ]);
+
   return (
     <div className="px-6 py-4">
-      {/* Welcome Section */}
+      {/* New Releases Section */}
       <section className="mb-8">
         <h1 className="text-3xl font-bold text-text-primary mb-6">
-          Good afternoon
+          New Releases
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Recently Played Items */}
-          {[1, 2, 3, 4, 5, 6].map((item) => (
-            <button
-              key={item}
-              className="flex items-center bg-melody-surface-low hover:bg-melody-surface-high transition-colors rounded-md overflow-hidden group"
-            >
-              <div className="w-20 h-20 bg-melody-surface flex-shrink-0" />
-              <span className="text-text-primary font-bold px-4">
-                Recently Played {item}
-              </span>
-            </button>
-          ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+          {topTracks.length > 0 ? (
+            topTracks.slice(0, 6).map((album: SpotifyAlbum) => (
+              <div
+                key={album.id}
+                className="bg-melody-surface-low p-4 rounded-md hover:bg-melody-surface-high transition-colors group cursor-pointer"
+              >
+                <div className="aspect-square relative mb-4 rounded-md shadow-lg overflow-hidden">
+                  <Image
+                    src={album.images[0].url}
+                    alt={album.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <h3 className="text-text-primary font-semibold mb-2 truncate">
+                  {album.name}
+                </h3>
+                <p className="text-text-secondary text-sm truncate">
+                  {album.artists.map((artist) => artist.name).join(", ")}
+                </p>
+              </div>
+            ))
+          ) : (
+            <div className="col-span-full flex flex-col items-center justify-center py-12 text-text-secondary">
+              <Music size={48} className="mb-4" />
+              <p className="text-lg">No new releases available</p>
+              <p className="text-sm">Please check back later</p>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Made For You Section */}
+      {/* Featured Playlists Section */}
       <section className="mb-8">
         <h2 className="text-2xl font-bold text-text-primary mb-4">
-          Made for you
+          Featured Playlists
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((item) => (
-            <div
-              key={item}
-              className="bg-melody-surface-low p-4 rounded-md hover:bg-melody-surface-high transition-colors group cursor-pointer"
-            >
-              <div className="aspect-square bg-melody-surface mb-4 rounded-md shadow-lg" />
-              <h3 className="text-text-primary font-semibold mb-2 truncate">
-                Daily Mix {item}
-              </h3>
-              <p className="text-text-secondary text-sm line-clamp-2">
-                Your daily music mix with your favorite artists and new
-                discoveries
-              </p>
+          {featuredPlaylists.length > 0 ? (
+            featuredPlaylists.slice(0, 6).map((playlist: SpotifyPlaylist) => (
+              <div
+                key={playlist.id}
+                className="bg-melody-surface-low p-4 rounded-md hover:bg-melody-surface-high transition-colors group cursor-pointer"
+              >
+                <div className="aspect-square relative mb-4 rounded-md shadow-lg overflow-hidden">
+                  <Image
+                    src={playlist.images[0].url}
+                    alt={playlist.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <h3 className="text-text-primary font-semibold mb-2 truncate">
+                  {playlist.name}
+                </h3>
+                <p className="text-text-secondary text-sm line-clamp-2">
+                  {playlist.description}
+                </p>
+              </div>
+            ))
+          ) : (
+            <div className="col-span-full flex flex-col items-center justify-center py-12 text-text-secondary">
+              <ListMusic size={48} className="mb-4" />
+              <p className="text-lg">No featured playlists available</p>
+              <p className="text-sm">Please check back later</p>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Featured Artists Section */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-bold text-text-primary mb-4">
-          Featured Artists
-        </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((item) => (
-            <div
-              key={item}
-              className="bg-melody-surface-low p-4 rounded-md hover:bg-melody-surface-high transition-colors group cursor-pointer"
-            >
-              <div className="aspect-square bg-melody-surface mb-4 rounded-full shadow-lg" />
-              <h3 className="text-text-primary font-semibold mb-2 text-center truncate">
-                Artist {item}
-              </h3>
-              <p className="text-text-secondary text-sm text-center">Artist</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Recently Added Section */}
-      <section>
-        <h2 className="text-2xl font-bold text-text-primary mb-4">
-          Recently Added
-        </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((item) => (
-            <div
-              key={item}
-              className="bg-melody-surface-low p-4 rounded-md hover:bg-melody-surface-high transition-colors group cursor-pointer"
-            >
-              <div className="aspect-square bg-melody-surface mb-4 rounded-md shadow-lg" />
-              <h3 className="text-text-primary font-semibold mb-2 truncate">
-                New Album {item}
-              </h3>
-              <p className="text-text-secondary text-sm line-clamp-2">
-                Latest addition to your music collection
-              </p>
-            </div>
-          ))}
+          )}
         </div>
       </section>
     </div>
