@@ -12,11 +12,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="overflow-x-hidden">
         <Header />
         <div className="flex">
           <Sidebar />
-          <main className="flex-1 ml-64 pt-16 pb-24">{children}</main>
+          <main className="flex-1 ml-64 pt-16 pb-24 min-w-0">{children}</main>
         </div>
         <MusicPlayer />
       </body>

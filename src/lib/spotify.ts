@@ -18,24 +18,11 @@ export interface SpotifyAlbum {
   artists: SpotifyArtist[];
 }
 
-export interface SpotifyPlaylist {
-  id: string;
-  name: string;
-  description: string;
-  images: SpotifyImage[];
-}
-
-interface SpotifyNewReleasesResponse {
+type SpotifyNewReleasesResponse = {
   albums: {
     items: SpotifyAlbum[];
   };
-}
-
-interface SpotifyFeaturedPlaylistsResponse {
-  playlists: {
-    items: SpotifyPlaylist[];
-  };
-}
+};
 
 interface SpotifyTokenResponse {
   access_token: string;
@@ -56,8 +43,6 @@ const basic = Buffer.from(`${client_id}:${client_secret}`).toString("base64");
 
 const TOKEN_ENDPOINT = "https://accounts.spotify.com/api/token";
 const TOP_TRACKS_ENDPOINT = "https://api.spotify.com/v1/browse/new-releases";
-const FEATURED_PLAYLISTS_ENDPOINT =
-  "https://api.spotify.com/v1/browse/featured-playlists";
 
 const getAccessToken = async (): Promise<SpotifyTokenResponse> => {
   try {
@@ -104,7 +89,7 @@ export const getTopTracks = async (): Promise<SpotifyAlbum[]> => {
       throw new Error(`Failed to get top tracks: ${error.error.message}`);
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as SpotifyNewReleasesResponse;
     if (!data.albums?.items) {
       console.error("Invalid response data:", data);
       throw new Error("Invalid response format: missing albums.items");
@@ -113,36 +98,6 @@ export const getTopTracks = async (): Promise<SpotifyAlbum[]> => {
     return data.albums.items;
   } catch (error) {
     console.error("Error getting top tracks:", error);
-    return []; // Return empty array instead of throwing to prevent page crash
-  }
-};
-
-export const getFeaturedPlaylists = async (): Promise<SpotifyPlaylist[]> => {
-  try {
-    const { access_token } = await getAccessToken();
-
-    const response = await fetch(FEATURED_PLAYLISTS_ENDPOINT, {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-    });
-
-    if (!response.ok) {
-      const error = (await response.json()) as SpotifyErrorResponse;
-      throw new Error(
-        `Failed to get featured playlists: ${error.error.message}`
-      );
-    }
-
-    const data = await response.json();
-    if (!data.playlists?.items) {
-      console.error("Invalid response data:", data);
-      throw new Error("Invalid response format: missing playlists.items");
-    }
-
-    return data.playlists.items;
-  } catch (error) {
-    console.error("Error getting featured playlists:", error);
     return []; // Return empty array instead of throwing to prevent page crash
   }
 };
