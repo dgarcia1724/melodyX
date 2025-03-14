@@ -5,7 +5,7 @@ import { Home, Search, Library, Plus } from "lucide-react";
 
 export default function Sidebar() {
   return (
-    <aside className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-melody-surface p-6">
+    <aside className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-melody-surface p-6 z-40">
       {/* Main Navigation */}
       <nav className="space-y-6">
         <ul className="space-y-2">

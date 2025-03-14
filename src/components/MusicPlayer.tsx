@@ -7,7 +7,7 @@ export default function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-melody-surface border-t border-melody-surface-low h-24 px-4">
+    <div className="fixed bottom-0 left-0 right-0 bg-[#181818] border-t border-melody-surface-low h-24 px-4 z-[100]">
       <div className="max-w-screen-2xl mx-auto flex items-center justify-between h-full">
         {/* Song Info */}
         <div className="flex items-center gap-4 w-[30%] min-w-[180px]">
